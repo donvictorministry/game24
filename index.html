@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Faith Games Center</title>
+
+  <!-- Android Theme & PWA -->
+  <meta name="theme-color" content="#DF1E5A">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Open Graph for Social Link Previews -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Faith Games Center - 21st Century Christian Gaming">
+  <meta property="og:description" content="Immersive, biblically sound Christian games for scripture memorization, theology, and spiritual growth on Android.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:url" content="https://faithgamescenter.org">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-mode">
+
+  <!-- 1. ACTIVE DESKTOP BLOCKER SCREEN -->
+  <div id="desktopBlocker" class="desktop-blocker" aria-hidden="true">
+    <div class="blocker-dialog">
+      <div class="blocker-icon-wrap">
+        <svg viewBox="0 0 24 24" class="blocker-svg"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+      </div>
+      <h1 class="blocker-title">Android Phone Only</h1>
+      <p class="blocker-desc">Faith Games Center is built exclusively for Android smartphones. Please access this application directly from your Android mobile browser for the full edge-to-edge experience.</p>
+    </div>
+  </div>
+
+  <!-- 2. CUSTOM POPUP MODAL DIALOG (Screen Center, No Browser Alerts) -->
+  <div id="centerModal" class="center-modal-scrim">
+    <div class="center-modal-card">
+      <div id="centerModalIcon" class="center-modal-icon"></div>
+      <h3 id="centerModalTitle" class="center-modal-title">Notice</h3>
+      <p id="centerModalBody" class="center-modal-text"></p>
+      <div class="center-modal-actions">
+        <button id="centerModalOkBtn" class="md3-btn md3-btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. TOAST NOTIFICATION -->
+  <div id="appToast" class="md3-toast" role="alert"></div>
+
+  <!-- 4. APP TOP BAR -->
+  <header class="app-header">
+    <div class="header-left">
+      <button id="leftMenuBtn" class="header-icon-btn" aria-label="Open Games Sidebar">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+      </button>
+      <div class="app-brand">
+        <svg viewBox="0 0 24 24" class="cross-svg"><path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/></svg>
+        <span class="app-brand-title">Faith Games</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button id="rightMenuBtn" class="header-icon-btn" aria-label="Open Public Options Menu">
+        <!-- 3 Vertical Dots Chrome Style Menu -->
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- DRAWER SCRIM OVERLAY -->
+  <div id="drawerOverlay" class="drawer-scrim"></div>
+
+  <!-- 5. LEFT SIDEBAR: MODULAR GAMES MENU (Dynamically Built) -->
+  <aside id="leftSidebar" class="sidebar-drawer left-drawer">
+    <div class="sidebar-header">
+      <div class="sidebar-title">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+        <span>Games Library</span>
+      </div>
+      <button id="closeLeftSidebar" class="header-icon-btn" aria-label="Close Sidebar">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    <div id="gamesNavList" class="sidebar-scroll-body">
+      <!-- Self-registering modular game items render here dynamically -->
+    </div>
+  </aside>
+
+  <!-- 6. RIGHT SIDEBAR: 3-DOTS CHROME PUBLIC INFORMATIONAL MENU -->
+  <aside id="rightSidebar" class="sidebar-drawer right-drawer">
+    <div class="sidebar-header">
+      <div class="sidebar-title">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <span>Information</span>
+      </div>
+      <button id="closeRightSidebar" class="header-icon-btn" aria-label="Close Public Menu">
+        <svg viewBox="0 0 24 24" class="icon-svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    <div class="sidebar-scroll-body">
+      <!-- 1. Dark Mode Toggle -->
+      <button id="menuDarkModeBtn" class="drawer-nav-item">
+        <svg viewBox="0 0 24 24" class="drawer-nav-icon"><path d="M12.3 2a10 10 0 0 0-1.9 19.8 10 10 0 0 0 11.6-11.6A10 10 0 0 0 12.3 2z"/></svg>
+        <span id="themeToggleText">Dark Mode: Off</span>
+      </button>
+
+      <!-- 2. About the App -->
+      <button class="drawer-nav-item" data-modal="aboutAppModal">
+        <svg viewBox="0 0 24 24" class="drawer-nav-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <span>About the App</span>
+      </button>
+
+      <!-- 3. About Developer -->
+      <button class="drawer-nav-item" data-modal="aboutDevModal">
+        <svg viewBox="0 0 24 24" class="drawer-nav-icon"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        <span>About Developer</span>
+      </button>
+
+      <!-- 4. About our Team -->
+      <button class="drawer-nav-item" data-modal="aboutTeamModal">
+        <svg viewBox="0 0 24 24" class="drawer-nav-icon"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <span>About our Team</span>
+      </button>
+
+      <!-- 5. How to Use -->
+      <button class="drawer-nav-item" data-modal="howToUseModal">
+        <svg viewBox="0 0 24 24" class="drawer-nav-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+        <span>How to Use</span>
+      </button>
+
+      <!-- 6. Terms of Use -->
+      <button class="drawer-nav-item" data-modal="termsModal">
+        <svg viewBox="0 0 24 24" class="drawer-nav-icon"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        <span>Terms of Use</span>
+      </button>
+
+      <!-- 7. Support Us -->
+      <button class="drawer-nav-item" data-modal="supportModal">
+        <svg viewBox="0 0 24 24" class="drawer-nav-icon"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <span>Support Us</span>
+      </button>
+
+      <!-- 8. Contact Us -->
+      <button class="drawer-nav-item" data-modal="contactModal">
+        <svg viewBox="0 0 24 24" class="drawer-nav-icon"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        <span>Contact Us</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- 7. MAIN VIEWPORT (100dvh, 100dvw) -->
+  <main id="mainViewport" class="main-viewport">
+
+    <!-- HOME DASHBOARD VIEW -->
+    <section id="homeView" class="app-screen active-screen">
+      <div class="home-hero">
+        <div class="home-cross-icon">
+          <svg viewBox="0 0 24 24"><path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/></svg>
+        </div>
+        <h1 class="home-title">Faith Games Center</h1>
+        <p class="home-subtitle">Engage scripture, master biblical doctrines, and embark on interactive Christian gaming journeys designed for Android.</p>
+        
+        <div class="home-actions">
+          <button id="openGamesHeroBtn" class="md3-btn md3-btn-primary">
+            <svg viewBox="0 0 24 24" class="btn-svg"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+            <span>Browse Games</span>
+          </button>
+          <button id="openInfoHeroBtn" class="md3-btn md3-btn-secondary">
+            <svg viewBox="0 0 24 24" class="btn-svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>Public Info</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FULLSCREEN MODULAR GAME CONTAINER (100dvh, 100dvw, Edge-to-Edge) -->
+    <section id="gameMountScreen" class="app-screen game-mount-screen">
+      <div class="edge-header">
+        <button id="gameReturnBackArrow" class="android-back-btn" aria-label="Return back to games menu">
+          <!-- Native Android Back Arrow -->
+          <svg viewBox="0 0 24 24" class="back-svg"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </button>
+        <h2 id="activeGameHeaderTitle" class="edge-header-title">Game View</h2>
+        <div id="gameScoreBadge" class="game-score-badge">0 PTS</div>
+      </div>
+      <div id="gameStageRoot" class="game-stage-viewport">
+        <!-- Self-contained modular games mount their HTML/CSS/JS here -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       FULLSCREEN PUBLIC INFORMATIONAL MODALS (100dvh, 100dvw)
+       ======================================================== -->
+
+  <!-- 1. ABOUT THE APP MODAL -->
+  <div id="aboutAppModal" class="fullscreen-modal-view">
+    <div class="edge-header">
+      <button class="android-back-btn modal-dismiss-btn" aria-label="Return">
+        <svg viewBox="0 0 24 24" class="back-svg"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <h2 class="edge-header-title">About the App</h2>
+    </div>
+    <div class="fullscreen-modal-content">
+      <div class="md3-card">
+        <h3 class="card-title">Kingdom Mission</h3>
+        <p class="card-text">Faith Games Center is an uncompromising mobile discipleship platform built to provide immersive Christian gaming experiences. Grounded in orthodox biblical doctrine, every game is built specifically for believers seeking to memorize scripture, comprehend historical covenants, and be spiritually fortified.</p>
+      </div>
+      <div class="md3-card">
+        <h3 class="card-title">Pure Android Architecture</h3>
+        <p class="card-text">Engineered completely for modern Android smartphones without desktop baggage, tracking, or unnecessary external dependencies. Every module operates offline with instantaneous touch response.</p>
+      </div>
+      <div class="md3-card">
+        <h3 class="card-title">Doctrinal Integrity</h3>
+        <p class="card-text">Sola Scriptura, justification by faith through grace alone, historical timeline fidelity, and Christological revelation across both Old and New Testaments.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ABOUT DEVELOPER MODAL (160x160 circular photo, 24/7 rotating gear ring, photo inside NEVER rotates) -->
+  <div id="aboutDevModal" class="fullscreen-modal-view">
+    <div class="edge-header">
+      <button class="android-back-btn modal-dismiss-btn" aria-label="Return">
+        <svg viewBox="0 0 24 24" class="back-svg"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <h2 class="edge-header-title">About Developer</h2>
+    </div>
+    <div class="fullscreen-modal-content dev-center-stage">
+      <!-- 160x160 circular photo container with 24/7 continuous rotating gear ring border -->
+      <div class="dev-avatar-container">
+        <div class="rotating-gear-border" aria-hidden="true">
+          <svg viewBox="0 0 100 100" class="gear-ring-svg">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#DF1E5A" stroke-width="4" stroke-dasharray="8 6" />
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#DF1E5A" stroke-width="2" />
+          </svg>
+        </div>
+        <!-- Developer photo: circular 160px width, 160px height. MUST NEVER ROTATE! -->
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Lead Developer" class="dev-static-photo" id="devPhotoPlaceholder">
+      </div>
+
+      <div class="md3-card dev-details-card">
+        <h3 class="card-title dev-name" id="devNamePlaceholder">David V. Gabriel</h3>
+        <p class="dev-role-title" id="devRolePlaceholder">Lead System Architect & Christian Software Developer</p>
+        
+        <div class="dev-bio-text">
+          <p class="bio-primary">Devoted follower of Jesus Christ committed to pioneering educational Christian software solutions for global believers.</p>
+          <div class="bio-extra" id="devBioExtra">
+            <p>Combining modern high-performance web engineering with deep doctrinal rigor. Over a decade of experience designing scalable mobile architectures, interactive scripture memorization tools, and kingdom-oriented digital platforms.</p>
+            <p>Passionate about providing young Christians with sound alternatives to worldly media through biblically faithful game engines.</p>
+          </div>
+        </div>
+
+        <button id="toggleDevBioBtn" class="md3-btn md3-btn-secondary">Show More</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ABOUT OUR TEAM MODAL (7 Circular Photos 150x150, Vertical Stack, Jump Up/Down Buttons, Show More/Less) -->
+  <div id="aboutTeamModal" class="fullscreen-modal-view">
+    <div class="edge-header">
+      <button class="android-back-btn modal-dismiss-btn" aria-label="Return">
+        <svg viewBox="0 0 24 24" class="back-svg"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <h2 class="edge-header-title">Meet Our Team</h2>
+    </div>
+    <div class="fullscreen-modal-content team-scroll-body" id="teamCardsContainer">
+
+      <!-- Member 1 -->
+      <div class="team-member-card" id="teamMember1">
+        <div class="team-nav-toolbar">
+          <button class="team-jump-nav jump-down" data-target="teamMember2" aria-label="Jump Down">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Pastor Emmanuel" class="team-circular-photo">
+        <h3 class="team-name">Pastor Emmanuel Okafor</h3>
+        <p class="team-role">Theological Advisor & Scripture Editor</p>
+        <div class="team-bio-wrapper">
+          <p class="bio-short">Oversees theological authenticity, scripture citations, and doctrinal integrity across all interactive modules.</p>
+          <div class="bio-expanded">
+            <p>Holding a Master of Divinity with specialization in Biblical Languages, Pastor Emmanuel ensures every trivia question and scriptural journey aligns faithfully with sound Christian hermeneutics.</p>
+          </div>
+        </div>
+        <button class="team-toggle-btn md3-btn md3-btn-secondary">Show More</button>
+      </div>
+
+      <!-- Member 2 -->
+      <div class="team-member-card" id="teamMember2">
+        <div class="team-nav-toolbar">
+          <button class="team-jump-nav jump-up" data-target="teamMember1" aria-label="Jump Up">
+            <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+          </button>
+          <button class="team-jump-nav jump-down" data-target="teamMember3" aria-label="Jump Down">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80" alt="Grace Adesina" class="team-circular-photo">
+        <h3 class="team-name">Grace Adesina</h3>
+        <p class="team-role">Curriculum & Scripture Memory Lead</p>
+        <div class="team-bio-wrapper">
+          <p class="bio-short">Specialist in mnemonic scripture systems and Christian educational gamification for youth ministries.</p>
+          <div class="bio-expanded">
+            <p>Grace has developed Christian education curricula for over eight years, helping children and young adults commit thousands of verses to memory through active-recall games.</p>
+          </div>
+        </div>
+        <button class="team-toggle-btn md3-btn md3-btn-secondary">Show More</button>
+      </div>
+
+      <!-- Member 3 -->
+      <div class="team-member-card" id="teamMember3">
+        <div class="team-nav-toolbar">
+          <button class="team-jump-nav jump-up" data-target="teamMember2" aria-label="Jump Up">
+            <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+          </button>
+          <button class="team-jump-nav jump-down" data-target="teamMember4" aria-label="Jump Down">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" alt="Caleb Jonathan" class="team-circular-photo">
+        <h3 class="team-name">Caleb Jonathan</h3>
+        <p class="team-role">Game Physics & Mechanics Engineer</p>
+        <div class="team-bio-wrapper">
+          <p class="bio-short">Builds responsive touch physics and edge-to-edge canvas interactions optimized for Android processors.</p>
+          <div class="bio-expanded">
+            <p>Passionate about clean zero-overhead JavaScript algorithms that deliver smooth 60fps frame rates on low and mid-tier Android smartphones.</p>
+          </div>
+        </div>
+        <button class="team-toggle-btn md3-btn md3-btn-secondary">Show More</button>
+      </div>
+
+      <!-- Member 4 -->
+      <div class="team-member-card" id="teamMember4">
+        <div class="team-nav-toolbar">
+          <button class="team-jump-nav jump-up" data-target="teamMember3" aria-label="Jump Up">
+            <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+          </button>
+          <button class="team-jump-nav jump-down" data-target="teamMember5" aria-label="Jump Down">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80" alt="Ruth Miriam" class="team-circular-photo">
+        <h3 class="team-name">Ruth Miriam</h3>
+        <p class="team-role">Material 3 UI/UX Design Specialist</p>
+        <div class="team-bio-wrapper">
+          <p class="bio-short">Devises accessible mobile touch targets, high-contrast layouts, and clean visual hierarchies.</p>
+          <div class="bio-expanded">
+            <p>Ruth focuses on strict Google Material Design 3 guidelines, ensuring touch interactions feel natural, buttons provide tactile feedback, and fonts remain bold and legible.</p>
+          </div>
+        </div>
+        <button class="team-toggle-btn md3-btn md3-btn-secondary">Show More</button>
+      </div>
+
+      <!-- Member 5 -->
+      <div class="team-member-card" id="teamMember5">
+        <div class="team-nav-toolbar">
+          <button class="team-jump-nav jump-up" data-target="teamMember4" aria-label="Jump Up">
+            <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+          </button>
+          <button class="team-jump-nav jump-down" data-target="teamMember6" aria-label="Jump Down">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80" alt="Samuel Kalu" class="team-circular-photo">
+        <h3 class="team-name">Samuel Kalu</h3>
+        <p class="team-role">Audio & Worship Interaction Designer</p>
+        <div class="team-bio-wrapper">
+          <p class="bio-short">Coordinates rhythmic worship interactions, hymnal harmonization, and spiritual soundscapes.</p>
+          <div class="bio-expanded">
+            <p>Samuel utilizes the Web Audio API to deliver crisp musical note feedback without heavy external MP3 downloads, preserving rapid offline loading.</p>
+          </div>
+        </div>
+        <button class="team-toggle-btn md3-btn md3-btn-secondary">Show More</button>
+      </div>
+
+      <!-- Member 6 -->
+      <div class="team-member-card" id="teamMember6">
+        <div class="team-nav-toolbar">
+          <button class="team-jump-nav jump-up" data-target="teamMember5" aria-label="Jump Up">
+            <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+          </button>
+          <button class="team-jump-nav jump-down" data-target="teamMember7" aria-label="Jump Down">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" alt="Deborah Vance" class="team-circular-photo">
+        <h3 class="team-name">Deborah Vance</h3>
+        <p class="team-role">Android QA & Testing Lead</p>
+        <div class="team-bio-wrapper">
+          <p class="bio-short">Ensures bug-free execution and responsive UI performance across all Android screen sizes and OS builds.</p>
+          <div class="bio-expanded">
+            <p>Deborah runs rigorous stress tests across low-memory Android devices to guarantee consistent rendering, smooth offline caching, and zero unexpected crashes.</p>
+          </div>
+        </div>
+        <button class="team-toggle-btn md3-btn md3-btn-secondary">Show More</button>
+      </div>
+
+      <!-- Member 7 -->
+      <div class="team-member-card" id="teamMember7">
+        <div class="team-nav-toolbar">
+          <button class="team-jump-nav jump-up" data-target="teamMember6" aria-label="Jump Up">
+            <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+          </button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" alt="Timothy Danjuma" class="team-circular-photo">
+        <h3 class="team-name">Timothy Danjuma</h3>
+        <p class="team-role">Outreach & Church Discipleship Liaison</p>
+        <div class="team-bio-wrapper">
+          <p class="bio-short">Connects Faith Games Center with global churches, youth groups, and Christian educational institutions.</p>
+          <div class="bio-expanded">
+            <p>Timothy organizes regional scripture quiz tournaments and liaises with Sunday school directors to integrate Faith Games Center into regular church discipleship programs.</p>
+          </div>
+        </div>
+        <button class="team-toggle-btn md3-btn md3-btn-secondary">Show More</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. HOW TO USE MODAL -->
+  <div id="howToUseModal" class="fullscreen-modal-view">
+    <div class="edge-header">
+      <button class="android-back-btn modal-dismiss-btn" aria-label="Return">
+        <svg viewBox="0 0 24 24" class="back-svg"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <h2 class="edge-header-title">How to Use</h2>
+    </div>
+    <div class="fullscreen-modal-content">
+      <div class="md3-card">
+        <h3 class="card-title">1. Launching Games</h3>
+        <p class="card-text">Tap the Gamepad menu icon at the top left to open the Games Library. Tap any game button to launch immediately into the full-screen edge-to-edge experience.</p>
+      </div>
+      <div class="md3-card">
+        <h3 class="card-title">2. Returning to Dashboard</h3>
+        <p class="card-text">Every game view features a native Android return back arrow at the top-left corner. Tapping this cleanly stops the active game session, updates your score, and returns you directly to the menu.</p>
+      </div>
+      <div class="md3-card">
+        <h3 class="card-title">3. True Offline Support</h3>
+        <p class="card-text">This web application utilizes an active Service Worker. After your first visit, all games, databases, and sound synthesis operate completely offline without requiring internet data.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. TERMS OF USE MODAL -->
+  <div id="termsModal" class="fullscreen-modal-view">
+    <div class="edge-header">
+      <button class="android-back-btn modal-dismiss-btn" aria-label="Return">
+        <svg viewBox="0 0 24 24" class="back-svg"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <h2 class="edge-header-title">Terms of Use</h2>
+    </div>
+    <div class="fullscreen-modal-content">
+      <div class="md3-card">
+        <h3 class="card-title">Ministry License</h3>
+        <p class="card-text">Faith Games Center is provided completely free of charge for personal discipleship, family worship, youth camps, and church ministry operations.</p>
+      </div>
+      <div class="md3-card">
+        <h3 class="card-title">Scriptural Fidelity</h3>
+        <p class="card-text">All scriptural citations are drawn from orthodox Christian translations. Biblical content cannot be altered or commercially monetized.</p>
+      </div>
+      <div class="md3-card">
+        <h3 class="card-title">Zero Data Tracking</h3>
+        <p class="card-text">We do not track, collect, monetize, or transmit your personal data. All gaming progress and scores are saved strictly inside your Android phone browser's local storage.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. SUPPORT US MODAL (Includes 4 Horizontally Stacked Social Buttons with Original Colors) -->
+  <div id="supportModal" class="fullscreen-modal-view">
+    <div class="edge-header">
+      <button class="android-back-btn modal-dismiss-btn" aria-label="Return">
+        <svg viewBox="0 0 24 24" class="back-svg"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <h2 class="edge-header-title">Support Us</h2>
+    </div>
+    <div class="fullscreen-modal-content">
+      <div class="md3-card">
+        <h3 class="card-title">Partner with Our Ministry</h3>
+        <p class="card-text">Faith Games Center operates as a non-commercial kingdom outreach. Your voluntary donations and partnership enable us to engineer new Christian games and maintain servers worldwide.</p>
+      </div>
+
+      <div class="md3-card">
+        <h3 class="card-title">Direct Bank Transfer</h3>
+        <p class="card-text"><strong>Bank:</strong> Union Bank</p>
+        <p class="card-text"><strong>Account Name:</strong> DVG Kingdom Ministries</p>
+        <p class="card-text"><strong>Account Number:</strong> 1000510055</p>
+        <button id="copySupportBankBtn" class="md3-btn md3-btn-secondary" style="margin-top:16px;">Copy Account Details</button>
+      </div>
+
+      <!-- 4 Social Media Buttons Horizontally Stacked with Original Branding Colors -->
+      <div class="social-row-container">
+        <p class="social-row-label">Connect & Send Receipt:</p>
+        <div class="social-buttons-horizontal">
+          <!-- Gmail -->
+          <a href="mailto:support@faithgamescenter.org" class="social-btn social-gmail" aria-label="Email Us via Gmail">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <!-- WhatsApp -->
+          <a href="https://wa.me/1234567890" target="_blank" rel="noopener" class="social-btn social-whatsapp" aria-label="Chat on WhatsApp">
+            <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.71 4.3 3.8.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.17-.48-.29z"/></svg>
+          </a>
+          <!-- Phone -->
+          <a href="tel:+1234567890" class="social-btn social-phone" aria-label="Call Ministry Hotline">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a href="https://facebook.com/faithgamescenter" target="_blank" rel="noopener" class="social-btn social-facebook" aria-label="Visit Facebook Page">
+            <svg viewBox="0 0 24 24"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03.82-2 2-2h1.5V2.14c-.31-.04-1.42-.14-2.7-.14-2.8 0-4.8 1.7-4.8 4.9v2.6H7v4h3v9.5h4v-9.5z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. CONTACT US MODAL (Includes 4 Horizontally Stacked Social Buttons with Original Colors) -->
+  <div id="contactModal" class="fullscreen-modal-view">
+    <div class="edge-header">
+      <button class="android-back-btn modal-dismiss-btn" aria-label="Return">
+        <svg viewBox="0 0 24 24" class="back-svg"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <h2 class="edge-header-title">Contact Us</h2>
+    </div>
+    <div class="fullscreen-modal-content">
+      <div class="md3-card">
+        <h3 class="card-title">Get in Touch</h3>
+        <p class="card-text">Have suggestions for new games, found a question to review, or wish to deploy Faith Games Center in your church fellowship? We would love to hear from you.</p>
+      </div>
+
+      <div class="md3-card">
+        <h3 class="card-title">Headquarters</h3>
+        <p class="card-text">Faith Games Kingdom Foundation</p>
+        <p class="card-text">Lagos & International Operations</p>
+        <p class="card-text">Hours: Monday - Friday (8:00 AM - 5:00 PM)</p>
+      </div>
+
+      <!-- 4 Social Media Buttons Horizontally Stacked with Original Branding Colors -->
+      <div class="social-row-container">
+        <p class="social-row-label">Reach Our Support Channels:</p>
+        <div class="social-buttons-horizontal">
+          <!-- Gmail -->
+          <a href="mailto:contact@faithgamescenter.org" class="social-btn social-gmail" aria-label="Send Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <!-- WhatsApp -->
+          <a href="https://wa.me/1234567890" target="_blank" rel="noopener" class="social-btn social-whatsapp" aria-label="WhatsApp Message">
+            <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.71 4.3 3.8.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.17-.48-.29z"/></svg>
+          </a>
+          <!-- Phone -->
+          <a href="tel:+1234567890" class="social-btn social-phone" aria-label="Call Us">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a href="https://facebook.com/faithgamescenter" target="_blank" rel="noopener" class="social-btn social-facebook" aria-label="Facebook Page">
+            <svg viewBox="0 0 24 24"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03.82-2 2-2h1.5V2.14c-.31-.04-1.42-.14-2.7-.14-2.8 0-4.8 1.7-4.8 4.9v2.6H7v4h3v9.5h4v-9.5z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONLY CORE SCRIPT LOADED HERE. WIDGETS ARE LOADED BY SCRIPTS.JS DYNAMICALLY -->
+  <script src="scripts.js"></script>
+</body>
+</html>
