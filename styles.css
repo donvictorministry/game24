@@ -1,0 +1,820 @@
+/* ========================================================
+   FAITH GAMES CENTER - MATERIAL DESIGN 3 (ANDROID PHONES ONLY)
+   Rules:
+   1. NO max-width rules anywhere!
+   2. NO font size smaller than 19px anywhere!
+   3. Edge-to-edge layout: 100dvh & 100dvw.
+   ======================================================== */
+
+:root {
+  /* Brand Palette - Material 3 */
+  --md-primary: #DF1E5A;
+  --md-primary-hover: #C2194D;
+  --md-primary-ripple: rgba(223, 30, 90, 0.2);
+
+  /* Light Mode Defaults */
+  --md-bg: #FFFFFF;
+  --md-surface: #F8F9FA;
+  --md-text: #121212;
+  --md-text-muted: #49454F;
+  --md-outline: #E0E0E0;
+
+  /* Status Colors */
+  --md-success: #146C2E;
+  --md-error: #B3261E;
+
+  /* Dimensions */
+  --header-height: 64px;
+
+  /* Easing */
+  --anim-fast: 0.18s cubic-bezier(0.2, 0, 0, 1);
+  --anim-standard: 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body.dark-mode {
+  --md-bg: #121212;
+  --md-surface: #1E1E1E;
+  --md-text: #FFFFFF;
+  --md-text-muted: #CAC4D0;
+  --md-outline: #333333;
+}
+
+/* Strict Typography Reset: Baseline Guarantee >= 19px */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 19px;
+  line-height: 1.45;
+  user-select: none;
+}
+
+html, body {
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--md-bg);
+  color: var(--md-text);
+  position: fixed;
+}
+
+/* ========================================================
+   1. ACTIVE DESKTOP BLOCKER
+   ======================================================== */
+.desktop-blocker {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: #121212;
+  color: #FFFFFF;
+  z-index: 999999;
+  padding: 32px 20px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.desktop-blocker.blocked {
+  display: flex;
+}
+
+.blocker-dialog {
+  background-color: #1E1E1E;
+  border: 3px solid var(--md-primary);
+  border-radius: 28px;
+  padding: 36px 20px;
+  width: 100%;
+}
+
+.blocker-icon-wrap {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 20px auto;
+  color: var(--md-primary);
+}
+
+.blocker-svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.blocker-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--md-primary);
+  margin-bottom: 16px;
+}
+
+.blocker-desc {
+  font-size: 19px;
+  color: #E0E0E0;
+  line-height: 1.5;
+}
+
+/* ========================================================
+   2. APP HEADER
+   ======================================================== */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: var(--header-height);
+  background-color: var(--md-surface);
+  border-bottom: 1px solid var(--md-outline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 1000;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--md-text);
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.header-icon-btn:active {
+  background-color: var(--md-primary-ripple);
+}
+
+.icon-svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cross-svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--md-primary);
+}
+
+.app-brand-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--md-primary);
+  letter-spacing: 0.5px;
+}
+
+/* ========================================================
+   3. MAIN VIEWPORT & HOME SCREEN
+   ======================================================== */
+.main-viewport {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  width: 100dvw;
+  height: calc(100dvh - var(--header-height));
+  overflow: hidden;
+}
+
+.app-screen {
+  display: none;
+  width: 100dvw;
+  height: 100%;
+}
+
+.app-screen.active-screen {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-hero {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.home-cross-icon {
+  width: 84px;
+  height: 84px;
+  margin-bottom: 20px;
+}
+
+.home-cross-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--md-primary);
+}
+
+.home-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--md-primary);
+  margin-bottom: 12px;
+}
+
+.home-subtitle {
+  font-size: 19px;
+  color: var(--md-text-muted);
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+.home-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Material 3 Buttons (Minimum 19px text) */
+.md3-btn {
+  width: 100%;
+  min-height: 58px;
+  padding: 14px 20px;
+  border-radius: 29px;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background-color var(--anim-fast);
+}
+
+.md3-btn-primary {
+  background-color: var(--md-primary);
+  color: #FFFFFF;
+}
+
+.md3-btn-primary:active {
+  background-color: var(--md-primary-hover);
+}
+
+.md3-btn-secondary {
+  background-color: transparent;
+  color: var(--md-primary);
+  border: 2px solid var(--md-primary);
+}
+
+.md3-btn-secondary:active {
+  background-color: var(--md-primary-ripple);
+}
+
+.btn-svg {
+  width: 26px;
+  height: 26px;
+  fill: currentColor;
+}
+
+/* ========================================================
+   4. SIDEBAR DRAWERS
+   ======================================================== */
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--anim-standard);
+}
+
+.drawer-scrim.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 86dvw;
+  height: 100dvh;
+  background-color: var(--md-surface);
+  z-index: 2100;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--anim-standard);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.left-drawer {
+  left: 0;
+  transform: translateX(-100%);
+  border-right: 1px solid var(--md-outline);
+}
+
+.left-drawer.open {
+  transform: translateX(0);
+}
+
+.right-drawer {
+  right: 0;
+  transform: translateX(100%);
+  border-left: 1px solid var(--md-outline);
+}
+
+.right-drawer.open {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  height: var(--header-height);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--md-outline);
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--md-primary);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.sidebar-scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.drawer-nav-item {
+  width: 100%;
+  min-height: 56px;
+  background: transparent;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--md-text);
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.drawer-nav-item:active {
+  background-color: var(--md-primary-ripple);
+  color: var(--md-primary);
+}
+
+.drawer-nav-icon {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* ========================================================
+   5. FULLSCREEN PAGE MODALS (100dvh, 100dvw Edge-to-Edge)
+   ======================================================== */
+.fullscreen-modal-view {
+  position: fixed;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: var(--md-bg);
+  z-index: 3000;
+  display: none;
+  flex-direction: column;
+}
+
+.fullscreen-modal-view.open {
+  display: flex;
+}
+
+.edge-header {
+  height: var(--header-height);
+  width: 100%;
+  background-color: var(--md-surface);
+  border-bottom: 1px solid var(--md-outline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+
+.android-back-btn {
+  background: transparent;
+  border: none;
+  color: var(--md-text);
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.android-back-btn:active {
+  background-color: var(--md-primary-ripple);
+}
+
+.back-svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+}
+
+.edge-header-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--md-primary);
+  flex: 1;
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-score-badge {
+  font-size: 19px;
+  font-weight: 800;
+  background-color: var(--md-primary);
+  color: #FFFFFF;
+  padding: 6px 14px;
+  border-radius: 18px;
+}
+
+.fullscreen-modal-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px 40px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.md3-card {
+  width: 100%;
+  background-color: var(--md-surface);
+  border: 1px solid var(--md-outline);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--md-primary);
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 19px;
+  color: var(--md-text);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+/* ========================================================
+   6. ABOUT DEVELOPER
+   160x160 circular photo, 24/7 rotating gear ring, photo inside NEVER rotates
+   ======================================================== */
+.dev-center-stage {
+  align-items: center;
+  text-align: center;
+}
+
+.dev-avatar-container {
+  position: relative;
+  width: 196px;
+  height: 196px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto 20px auto;
+}
+
+/* Rotating Gear Ring 24/7 */
+.rotating-gear-border {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  animation: continuousGearSpin 8s linear infinite;
+}
+
+@keyframes continuousGearSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.gear-ring-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Developer Photo (160x160) - STRICTLY NEVER ROTATES */
+.dev-static-photo {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--md-surface);
+  z-index: 10;
+  transform: none !important;
+}
+
+.dev-details-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dev-name {
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--md-primary);
+}
+
+.dev-role-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--md-text-muted);
+}
+
+.dev-bio-text {
+  font-size: 19px;
+  line-height: 1.55;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bio-extra {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bio-extra.expanded {
+  display: flex;
+}
+
+/* ========================================================
+   7. ABOUT OUR TEAM (7 Cards, 150x150, Up/Down Nav)
+   ======================================================== */
+.team-scroll-body {
+  scroll-behavior: smooth;
+}
+
+.team-member-card {
+  position: relative;
+  width: 100%;
+  background-color: var(--md-surface);
+  border: 1px solid var(--md-outline);
+  border-radius: 24px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.team-nav-toolbar {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.team-jump-nav {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  border: none;
+  background-color: var(--md-primary-ripple);
+  color: var(--md-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.team-jump-nav svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+/* 150x150 Circular Photo - No Rotating Ring */
+.team-circular-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--md-primary);
+  margin-top: 8px;
+}
+
+.team-name {
+  font-size: 23px;
+  font-weight: 800;
+  color: var(--md-primary);
+}
+
+.team-role {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--md-text-muted);
+}
+
+.team-bio-wrapper {
+  font-size: 19px;
+  text-align: left;
+}
+
+.bio-expanded {
+  display: none;
+  margin-top: 8px;
+}
+
+.bio-expanded.expanded {
+  display: block;
+}
+
+/* ========================================================
+   8. SOCIAL BUTTONS (Gmail, WhatsApp, Phone, Facebook)
+   ======================================================== */
+.social-row-container {
+  width: 100%;
+  background-color: var(--md-surface);
+  border: 1px solid var(--md-outline);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+}
+
+.social-row-label {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--md-text);
+}
+
+.social-buttons-horizontal {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.social-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.social-btn svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+}
+
+/* Original Branding Colors */
+.social-gmail { background-color: #EA4335; }
+.social-whatsapp { background-color: #25D366; }
+.social-phone { background-color: #34B7F1; }
+.social-facebook { background-color: #1877F2; }
+
+/* ========================================================
+   9. MODULAR GAME STAGE VIEWPORT
+   ======================================================== */
+.game-mount-screen {
+  flex-direction: column;
+}
+
+.game-stage-viewport {
+  flex: 1;
+  width: 100%;
+  height: calc(100% - var(--header-height));
+  position: relative;
+  overflow: hidden;
+  background-color: var(--md-bg);
+}
+
+/* ========================================================
+   10. CENTER MODAL SCRIM & TOAST
+   ======================================================== */
+.center-modal-scrim {
+  position: fixed;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 50000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.center-modal-scrim.active {
+  display: flex;
+}
+
+.center-modal-card {
+  width: 100%;
+  background-color: var(--md-surface);
+  border: 2px solid var(--md-outline);
+  border-radius: 28px;
+  padding: 28px 20px;
+  text-align: center;
+}
+
+.center-modal-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--md-primary);
+  margin-bottom: 12px;
+}
+
+.center-modal-text {
+  font-size: 19px;
+  color: var(--md-text);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.md3-toast {
+  position: fixed;
+  top: 80px;
+  left: 16px;
+  right: 16px;
+  min-height: 52px;
+  background-color: #1E1E1E;
+  color: #FFFFFF;
+  border-radius: 26px;
+  padding: 12px 20px;
+  font-size: 19px;
+  font-weight: 600;
+  text-align: center;
+  z-index: 60000;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px);
+  transition: opacity var(--anim-fast), transform var(--anim-fast);
+}
+
+.md3-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.md3-toast.success { background-color: var(--md-success); }
+.md3-toast.error { background-color: var(--md-error); }
